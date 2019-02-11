@@ -1,0 +1,1 @@
+json.(course, :id, :name, :short_code, :credit_hours)
