@@ -32,7 +32,7 @@ class Schedule
   def prerequisites_are_met
     prerequisites.each do |prereq|
       grade = grades[prereq.requirement]
-      unless grade && grade <= prereq.minimum_grade_value
+      unless grade && prereq.minimum_grade <= Grade.new(grade)
         errors.add(
           :prerequisites,
           :not_met,

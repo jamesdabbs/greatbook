@@ -13,4 +13,22 @@ RSpec.describe Grade do
       expect(b.to_s).to eq 'B'
     end
   end
+
+  context 'comparison' do
+    let(:a) { Grade.new('A') }
+    let(:b_minus) { Grade.new('B-') }
+    let(:b) { Grade.new('B') }
+
+    it 'compares one way' do
+      expect(a > b).to be true
+    end
+
+    it 'compares the other way' do
+      expect(b < a).to be true
+    end
+
+    xit 'compares minus' do
+      expect(b_minus < b).to be true
+    end
+  end
 end
