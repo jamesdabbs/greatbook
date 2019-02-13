@@ -57,7 +57,23 @@ RSpec.describe Section do
       expect(section(course).admit?(student)).not_to eq true
     end
 
-    it 'requires students to met the minimum grade in prerequisites' do
+    xit 'requires students to have takes the prerequisites with pluses' do
+      prereq = create(:course)
+      course = create(:course, with_prerequisites: { prereq => 'C' })
+      student = create(:student, with_grades: { prereq => 'C-'})
+
+      expect(section(course).admit?(student)).to eq false
+    end
+
+    xit 'requires students to have takes the prerequisites with pluses' do
+      prereq = create(:course)
+      course = create(:course, with_prerequisites: { prereq => 'C' })
+      student = create(:student, with_grades: { prereq => 'C+'})
+
+      expect(section(course).admit?(student)).to eq true
+    end
+
+    it 'requires students to meet the minimum grade in prerequisites' do
       prereq1 = create(:course)
       prereq2 = create(:course)
       course = create(:course, with_prerequisites: {
