@@ -41,9 +41,9 @@ class Section < ApplicationRecord
 
     grades = user.grades(courses: requirements.keys)
 
-    requirements.all? do |course, minimum_grade|
+    requirements.all? do |course, minimum_grade_value|
       grade = grades[course]
-      grade && grade <= minimum_grade
+      grade && grade <= minimum_grade_value
     end
   end
 

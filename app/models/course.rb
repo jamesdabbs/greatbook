@@ -20,7 +20,7 @@ class Course < ApplicationRecord
     @requirements ||= prerequisites.
       includes(:requirement).
       each_with_object({}) do |prereq, requirements|
-        requirements[prereq.requirement] = prereq.minimum_grade
+        requirements[prereq.requirement] = prereq.minimum_grade_value
       end
   end
 end

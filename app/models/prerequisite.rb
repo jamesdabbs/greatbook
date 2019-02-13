@@ -21,4 +21,12 @@
 class Prerequisite < ApplicationRecord
   belongs_to :course
   belongs_to :requirement, class_name: 'Course'
+
+  def minimum_grade
+    Grade.new(self[:minimum_grade])
+  end
+
+  def minimum_grade_value
+    minimum_grade.value
+  end
 end
