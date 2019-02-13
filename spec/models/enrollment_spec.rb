@@ -32,7 +32,7 @@ RSpec.describe Enrollment do
       expect(enrollment.grade).to eq 'F'
     end
 
-    xit 'can be created with minus grade' do
+    it 'can be created with minus grade' do
       enrollment = create(:enrollment, grade: 'B-')
       expect(enrollment.grade).to eq 'B-'
     end

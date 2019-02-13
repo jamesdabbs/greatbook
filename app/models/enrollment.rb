@@ -22,7 +22,5 @@ class Enrollment < ApplicationRecord
   belongs_to :section
   belongs_to :user
 
-  GRADES = %w(A B C D F)
-
-  validates :grade, inclusion: { in: GRADES, allow_nil: true }
+  validates :grade, inclusion: { in: Grade::SCORES.keys, allow_nil: true }
 end

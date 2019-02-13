@@ -1,10 +1,5 @@
 class Transcript
-  GRADE_SCORES = {
-    'A' => 4.0,
-    'B' => 3.0,
-    'C' => 2.0,
-    'D' => 1.0
-  }
+  GRADE_SCORES = Grade::SCORES
 
   attr_reader :student, :enrollment
 
