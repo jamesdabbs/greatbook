@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resources :sections, only: [] do
     resources :students, only: [] do
-      resource :grade, only: %i(update)
+      resource :grade, only: %i(create update)
     end
   end
 

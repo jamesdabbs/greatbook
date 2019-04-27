@@ -32,6 +32,9 @@ class Section < ApplicationRecord
   has_many :enrollment
   has_many :students, through: :enrollment, source: :user
 
+  has_many :section_assistants
+  has_many :assistants, through: :section_assistants, source: :user
+
   def admit?(user)
     return false unless user.role == 'student'
     return false if user.on_probation?

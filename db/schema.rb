@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_10_233546) do
+ActiveRecord::Schema.define(version: 2019_04_27_221122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "courses", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "short_code", null: false
+    t.integer "credit_hours", null: false
+  end
 
   create_table "enrollments", force: :cascade do |t|
     t.bigint "section_id", null: false
@@ -21,23 +27,6 @@ ActiveRecord::Schema.define(version: 2019_02_10_233546) do
     t.string "grade"
     t.index ["section_id"], name: "index_enrollment_on_section_id"
     t.index ["user_id"], name: "index_enrollment_on_user_id"
-  end
-
-  create_table "sections", force: :cascade do |t|
-    t.bigint "course_id", null: false
-    t.bigint "term_id", null: false
-    t.bigint "room_id", null: false
-    t.bigint "instructor_id", null: false
-    t.index ["course_id"], name: "index_courses_on_course_id"
-    t.index ["term_id"], name: "index_courses_on_term_id"
-    t.index ["instructor_id"], name: "index_courses_on_instructor_id"
-    t.index ["room_id"], name: "index_courses_on_room_id"
-  end
-
-  create_table "courses", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "short_code", null: false
-    t.integer "credit_hours", null: false
   end
 
   create_table "prerequisites", force: :cascade do |t|
@@ -51,6 +40,25 @@ ActiveRecord::Schema.define(version: 2019_02_10_233546) do
   create_table "rooms", force: :cascade do |t|
     t.string "number"
     t.integer "capacity"
+  end
+
+  create_table "section_assistants", force: :cascade do |t|
+    t.bigint "section_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["section_id"], name: "index_section_assistants_on_section_id"
+    t.index ["user_id"], name: "index_section_assistants_on_user_id"
+    t.index ["section_id", "user_id"], name: "index_section_assistants_on_section_id_and_user_id"
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.bigint "term_id", null: false
+    t.bigint "room_id", null: false
+    t.bigint "instructor_id", null: false
+    t.index ["course_id"], name: "index_courses_on_course_id"
+    t.index ["instructor_id"], name: "index_courses_on_instructor_id"
+    t.index ["room_id"], name: "index_courses_on_room_id"
+    t.index ["term_id"], name: "index_courses_on_term_id"
   end
 
   create_table "terms", force: :cascade do |t|
@@ -77,10 +85,12 @@ ActiveRecord::Schema.define(version: 2019_02_10_233546) do
 
   add_foreign_key "enrollments", "sections"
   add_foreign_key "enrollments", "users"
-  add_foreign_key "sections", "courses"
-  add_foreign_key "sections", "terms"
-  add_foreign_key "sections", "rooms"
-  add_foreign_key "sections", "users", column: "instructor_id"
   add_foreign_key "prerequisites", "courses"
   add_foreign_key "prerequisites", "courses", column: "requirement_id"
+  add_foreign_key "section_assistants", "sections"
+  add_foreign_key "section_assistants", "users"
+  add_foreign_key "sections", "courses"
+  add_foreign_key "sections", "rooms"
+  add_foreign_key "sections", "terms"
+  add_foreign_key "sections", "users", column: "instructor_id"
 end

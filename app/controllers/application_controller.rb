@@ -1,10 +1,17 @@
 class ApplicationController < ActionController::Base
+  class NotAllowed < StandardError; end
+
   before_action { request.format = :json }
 
   rescue_from ActiveRecord::RecordInvalid do |error|
     render json: {
       error: error.record.errors
     }, status: :unprocessable_entity
+  end
+  rescue_from NotAllowed do |error|
+    render json: {
+      error: error.message
+    }, status: :forbidden
   end
   rescue_from User::RoleRequired do |error|
     render json: {

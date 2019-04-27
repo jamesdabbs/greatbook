@@ -49,6 +49,25 @@ FactoryBot.define do
       end
     end
 
+    factory :assistant do
+      transient do
+        section  { create(:section) }
+        enrolled { true }
+      end
+
+      after :build do |user, evaluator|
+        user.role = User::STUDENT
+      end
+
+      after :create do |user, evaluator|
+        evaluator.section.assistants << user
+
+        if evaluator.enrolled
+          evaluator.section.enrollment.create!(user: user)
+        end
+      end
+    end
+
     factory :student do
       transient do
         with_grades { {} }
@@ -59,9 +78,9 @@ FactoryBot.define do
         student.role = User::STUDENT
       end
 
-      after :create do |student, ev|
-        ev.with_grades.each do |course, grade|
-          section = create(:section, course: course, term: ev.in_term)
+      after :create do |student, evaluator|
+        evaluator.with_grades.each do |course, grade|
+          section = create(:section, course: course, term: evaluator.in_term)
 
           student.enrollment.create!(
             section: section,

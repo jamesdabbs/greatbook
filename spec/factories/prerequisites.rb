@@ -22,6 +22,6 @@ FactoryBot.define do
   factory :prerequisite do
     course
     requirement   { build(:course) }
-    minimum_grade { %w(A B C).shuffle }
+    minimum_grade { %w(A B C).sample }
   end
 end
