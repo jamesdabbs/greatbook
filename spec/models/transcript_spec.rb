@@ -20,7 +20,7 @@ RSpec.describe Transcript do
       expect(report.gpa).to eq 4.0
     end
 
-    xit 'reports all B+s as a 3.3' do
+    it 'reports all B+s as a 3.3' do
       student = create(:student, with_grades: {
         cs101 => 'B+',
         math101 => 'B+'
