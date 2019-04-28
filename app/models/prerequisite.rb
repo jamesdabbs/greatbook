@@ -22,5 +22,6 @@ class Prerequisite < ApplicationRecord
   belongs_to :course
   belongs_to :requirement, class_name: 'Course'
 
-  validates :minimum_grade, inclusion: { in: %w(A B C D) }
+  serialize :minimum_grade, Grade
+  validates :minimum_grade, inclusion: { in: Grade.all }
 end
