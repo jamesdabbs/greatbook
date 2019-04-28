@@ -1,6 +1,6 @@
 class GradesController < ApplicationController
   def create
-    unless can_create_grades?
+    unless section.role_for(current_user).can_create_grades?(student: student)
       raise NotAllowed, "Not allowed to set grades for #{student.name} in section #{section.id}"
     end
 
@@ -10,7 +10,7 @@ class GradesController < ApplicationController
   end
 
   def update
-    unless can_update_grades?
+    unless section.role_for(current_user).can_update_grades?
       raise NotAllowed, "Not allowed to revise grades for #{student.name} in section #{section.id}"
     end
 
@@ -27,20 +27,5 @@ class GradesController < ApplicationController
 
   def student
     @student = section.students.find(params[:student_id])
-  end
-
-  def can_create_grades?
-    can_update_grades?
-  end
-
-  def can_update_grades?
-    role = current_user.role
-    if role == 'admin'
-      true
-    elsif role == 'teacher'
-      section.instructor_id == current_user.id
-    else
-      false
-    end
   end
 end

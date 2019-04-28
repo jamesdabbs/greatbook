@@ -60,4 +60,52 @@ class Section < ApplicationRecord
   end
 
   delegate :credit_hours, to: :course
+
+  class Role
+    attr_reader :user
+
+    def initialize(user)
+      @user = user
+    end
+
+    def can_create_grades?(**)
+      can_update_grades?
+    end
+
+    def can_update_grades?
+      false
+    end
+  end
+
+  class AdminRole < Role
+    def can_update_grades?
+      true
+    end
+  end
+
+  class InstructorRole < Role
+    def can_update_grades?
+      true
+    end
+  end
+
+  class StudentRole < Role
+  end
+
+  class NoRole < Role
+  end
+
+  def role_for(user)
+    klass = if user.role == 'admin'
+      AdminRole
+    elsif user == instructor
+      InstructorRole
+    elsif students.include?(user)
+      StudentRole
+    else
+      NoRole
+    end
+
+    klass.new(user)
+  end
 end
