@@ -89,6 +89,16 @@ class Section < ApplicationRecord
     end
   end
 
+  class AssistantRole < Role
+    def can_create_grades?(student:)
+      user != student
+    end
+
+    def can_update_grades?
+      false
+    end
+  end
+
   class StudentRole < Role
   end
 
@@ -100,6 +110,8 @@ class Section < ApplicationRecord
       AdminRole
     elsif user == instructor
       InstructorRole
+    elsif assistants.include?(user)
+      AssistantRole
     elsif students.include?(user)
       StudentRole
     else
