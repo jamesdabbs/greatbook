@@ -64,30 +64,30 @@ RSpec.describe GradesController do
     end
   end
 
-  # context 'as an assistant' do
-  #   let(:user) { create(:assistant, section: section) }
+  xcontext 'as an assistant' do
+    let(:user) { create(:assistant, section: section) }
 
-  #   it 'can set grades for other students' do
-  #     post section_student_grade_path(section, student), params: { grade: 'C' }
+    it 'can set grades for other students' do
+      post section_student_grade_path(section, student), params: { grade: 'C' }
 
-  #     expect(response).to have_http_status :created
-  #     expect(json.grade).to eq 'C'
-  #   end
+      expect(response).to have_http_status :created
+      expect(json.grade).to eq 'C'
+    end
 
-  #   it 'cannot set grades for the assistant' do
-  #     post section_student_grade_path(section, user), params: { grade: 'A' }
+    it 'cannot set grades for the assistant' do
+      post section_student_grade_path(section, user), params: { grade: 'A' }
 
-  #     expect(response).to have_http_status :forbidden
-  #     expect(json.error).to be_present
-  #   end
+      expect(response).to have_http_status :forbidden
+      expect(json.error).to be_present
+    end
 
-  #   it 'cannot update grades' do
-  #     patch section_student_grade_path(section, student), params: { grade: 'C' }
+    it 'cannot update grades' do
+      patch section_student_grade_path(section, student), params: { grade: 'C' }
 
-  #     expect(response).to have_http_status :forbidden
-  #     expect(json.error).to be_present
-  #   end
-  # end
+      expect(response).to have_http_status :forbidden
+      expect(json.error).to be_present
+    end
+  end
 
   context 'as a student' do
     let(:user) { student }
