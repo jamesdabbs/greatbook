@@ -64,7 +64,7 @@ RSpec.describe GradesController do
     end
   end
 
-  xcontext 'as an assistant' do
+  context 'as an assistant' do
     let(:user) { create(:assistant, section: section) }
 
     it 'can set grades for other students' do

@@ -68,6 +68,8 @@ class Section < ApplicationRecord
         AdminRole
       elsif role == 'teacher'
         TeacherRole
+      elsif section.assistants.include?(user)
+        AssistantRole
       else
         StudentRole
       end.new(section, user)
@@ -98,6 +100,16 @@ class Section < ApplicationRecord
   class TeacherRole < Role
     def can_update_grades?
       section.instructor_id == user.id
+    end
+  end
+
+  class AssistantRole < Role
+    def can_create_grades?(student:)
+      user != student
+    end
+
+    def can_update_grades?
+      false
     end
   end
 
