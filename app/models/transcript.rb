@@ -1,11 +1,4 @@
 class Transcript
-  GRADE_SCORES = {
-    'A' => 4.0,
-    'B' => 3.0,
-    'C' => 2.0,
-    'D' => 1.0
-  }
-
   attr_reader :student, :enrollment
 
   def self.for(student:, terms: nil, courses: nil)
@@ -25,7 +18,7 @@ class Transcript
     score = 0.0
     hours = 0
     enrollment.each do |enrollment|
-      score += GRADE_SCORES[enrollment.grade] * enrollment.section.course.credit_hours
+      score += enrollment.grade.score * enrollment.section.course.credit_hours
       hours += enrollment.section.course.credit_hours
     end
     (score / hours).round(2)
