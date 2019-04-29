@@ -60,4 +60,54 @@ class Section < ApplicationRecord
   end
 
   delegate :credit_hours, to: :course
+
+  class Role
+    def self.for(section, user)
+      role = user.role
+      if role == 'admin'
+        AdminRole
+      elsif role == 'teacher'
+        TeacherRole
+      else
+        StudentRole
+      end.new(section, user)
+    end
+
+    attr_reader :section, :user
+
+    def initialize(section, user)
+      @section = section
+      @user = user
+    end
+
+    def can_create_grades?(**)
+      can_update_grades?
+    end
+
+    def can_update_grades?
+      raise NotImplementedError
+    end
+  end
+
+  class AdminRole < Role
+    def can_update_grades?
+      true
+    end
+  end
+
+  class TeacherRole < Role
+    def can_update_grades?
+      section.instructor_id == user.id
+    end
+  end
+
+  class StudentRole < Role
+    def can_update_grades?
+      false
+    end
+  end
+
+  def role_for(user)
+    Role.for(self, user)
+  end
 end
