@@ -1,6 +1,6 @@
 class GradesController < ApplicationController
   def create
-    unless can_create_grades?
+    unless can_update_grades?
       raise NotAllowed, "Not allowed to set grades for #{student.name} in section #{section.id}"
     end
 
@@ -27,10 +27,6 @@ class GradesController < ApplicationController
 
   def student
     @student = section.students.find(params[:student_id])
-  end
-
-  def can_create_grades?
-    can_update_grades?
   end
 
   def can_update_grades?
