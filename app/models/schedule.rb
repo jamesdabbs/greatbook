@@ -43,11 +43,11 @@ class Schedule
   end
 
   def prerequisites
-    @prerequisites = Prerequisite.where(course: courses).includes(:course, :requirement)
+    @prerequisites ||= Prerequisite.where(course: courses).includes(:course, :requirement)
   end
 
   def grades
-    @grades = student.grades(courses: prerequisites.map(&:requirement))
+    @grades ||= student.grades(courses: prerequisites.map(&:requirement))
   end
 
   def courses
